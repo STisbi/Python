@@ -1,25 +1,24 @@
-<?xml version="1.0"?>
 <data>
     <country name="Liechtenstein">
-        <rank>1</rank>
+        <rank update="yes">1</rank>
         <year>2008</year>
         <gdppc>141100</gdppc>
-        <rank>3</rank>
-        <neighbor name="Austria" direction="E"/>
-        <neighbor name="Switzerland" direction="W"/>
+        <rank update="yes">3</rank>
+        <neighbor direction="E" name="Austria" />
+        <neighbor direction="W" name="Switzerland" />
     </country>
     <country name="Singapore">
-        <rank>4</rank>
+        <rank update="yes">4</rank>
         <year>2011</year>
         <gdppc>59900</gdppc>
-        <neighbor name="Malaysia" direction="N"/>
+        <neighbor direction="N" name="Malaysia" />
     </country>
     <country name="Panama">
-        <rank>68</rank>
+        <rank update="yes">68</rank>
         <year>2011</year>
         <gdppc>13600</gdppc>
         <year>1999</year>
-        <neighbor name="Costa Rica" direction="W"/>
-        <neighbor name="Colombia" direction="E"/>
+        <neighbor direction="W" name="Costa Rica" />
+        <neighbor direction="E" name="Colombia" />
     </country>
 </data>
