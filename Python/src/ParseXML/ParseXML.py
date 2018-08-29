@@ -14,11 +14,14 @@ def Parse(script):
     tree = ET.parse(script)
     root = tree.getroot()
     
+    # Use the file specified in the main method
     #PrintTA(root)
     #Find(root)
     #Modify(tree)
-    #EmbeddedNamespace(root)
-    FullyNamespaced(root)
+    
+    # These use a different file specified in the method
+    #EmbeddedNamespace()
+    FullyNamespaced()
     
 
 #######################################################
@@ -104,8 +107,12 @@ def Modify(tree):
 #
 # Parameters:  The XML root
 #######################################################
-def EmbeddedNamespace(root):
+def EmbeddedNamespace():
     print("EmbeddedNamespace\n")
+    
+    file = "XML Scripts\EmbeddedNamespace.xml"
+    tree = ET.parse(file)
+    root = tree.getroot()
     
     # Dictionary using the namespaces from the XML 
     namespace = {"fiction" : "http://characters.example.com",
@@ -125,8 +132,12 @@ def EmbeddedNamespace(root):
 #
 # Parameters:  The XML root
 #######################################################
-def FullyNamespaced(root):
+def FullyNamespaced():
     print("FullyNamespaced\n")
+    
+    file = "XML Scripts\FullyNamespaced.xml"
+    tree = ET.parse(file)
+    root = tree.getroot()
     
     # Dictionary using the namespaces from the XML 
     namespace = {"actor" : "http://characters.example.com",
@@ -143,7 +154,7 @@ def FullyNamespaced(root):
 #                        MAIN                         #
 #######################################################
 def main():
-    file = "XML Scripts\FullyNamespaced.xml"
+    file = "XML Scripts\BasicScript.xml"
     Parse(file)
 
 if __name__ == "__main__":
