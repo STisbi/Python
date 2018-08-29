@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<actors xmlns:actor="http://characters.example.com" xmlns="http://people.example.com">
+    <actor:male>
+        <actor:name>John Cleese</actor:name>
+        <actor:character>Lancelot</actor:character>
+        <actor:character>Archie Leach</actor:character>
+    </actor:male>
+    <actor:male>
+        <actor:name>Eric Idle</actor:name>
+        <actor:character>Sir Robin</actor:character>
+        <actor:character>Gunther</actor:character>
+        <actor:character>Commander Clement</actor:character>
+    </actor:male>
+</actors>

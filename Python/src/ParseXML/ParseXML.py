@@ -17,7 +17,8 @@ def Parse(script):
     #PrintTA(root)
     #Find(root)
     #Modify(tree)
-    Namespace(root)
+    #EmbeddedNamespace(root)
+    FullyNamespaced(root)
     
 
 #######################################################
@@ -97,14 +98,14 @@ def Modify(tree):
             
 
 #######################################################
-# Name: Namespace
+# Name: EmbeddedNamespace
 #
-# Description: Find but with a namespaced XML
+# Description: Find but with a partially namespaced XML
 #
 # Parameters:  The XML root
 #######################################################
-def Namespace(root):
-    print("\nNamespace\n")
+def EmbeddedNamespace(root):
+    print("EmbeddedNamespace\n")
     
     # Dictionary using the namespaces from the XML 
     namespace = {"fiction" : "http://characters.example.com",
@@ -117,12 +118,32 @@ def Namespace(root):
         for character in actor.findall("fiction:character", namespace):
             print(character.text)
 
+#######################################################
+# Name: FullyNamespaced
+#
+# Description: Find but with a fully namespaced XML
+#
+# Parameters:  The XML root
+#######################################################
+def FullyNamespaced(root):
+    print("FullyNamespaced\n")
+    
+    # Dictionary using the namespaces from the XML 
+    namespace = {"actor" : "http://characters.example.com",
+                 "xlms" : "http://people.example.com"}
+    
+    # actor has to be defined in the above dictionary
+    for male in root.findall("actor:male", namespace):
+        for name in male.findall("actor:name", namespace):
+            print(name.text)
+
+
 
 #######################################################
 #                        MAIN                         #
 #######################################################
 def main():
-    file = "namespace.xml"
+    file = "XML Scripts\FullyNamespaced.xml"
     Parse(file)
 
 if __name__ == "__main__":
