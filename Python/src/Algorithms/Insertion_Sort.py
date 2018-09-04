@@ -3,7 +3,8 @@ def InsertionSort():
     array = [5, 2, 4, 6, 1, 3]
     
     # enumerate() for use of index and key
-    # Start at the second value and the second index value 
+    # Start at the second value and the second index value, otherwise
+    #     the first comparison will be the first element to itself
     for index, key in enumerate(array[1:], 1):
         
         # Compare to the key to values before it 
