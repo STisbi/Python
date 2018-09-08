@@ -139,6 +139,12 @@ def FullyNamespaced():
     tree = ET.parse(file)
     root = tree.getroot()
     
+    # Register it to get the proper namespaces in output
+    ET.register_namespace("xmlns", "http://people.example.com")
+    ET.register_namespace("", "http://people.example.com")
+    ET.register_namespace("actor", "http://characters.example.com")
+    
+    
     # Dictionary using the namespaces from the XML 
     namespace = {"actor" : "http://characters.example.com",
                  "xlms" : "http://people.example.com"}
@@ -146,7 +152,13 @@ def FullyNamespaced():
     # actor has to be defined in the above dictionary
     for male in root.findall("actor:male", namespace):
         for name in male.findall("actor:name", namespace):
+            if(name.text == "John Cleese"):
+                name.text = "Richard Dick"
             print(name.text)
+    
+    tree.write("XML Scripts\Output.xml")
+    # This has to be after the first write, adds the utf-8 thing at the top
+    tree.write("XML Scripts\Output.xml", xml_declaration=True,encoding='utf-8', method="xml")
 
 
 
