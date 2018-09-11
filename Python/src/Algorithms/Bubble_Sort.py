@@ -1,6 +1,23 @@
 def BubbleSort():
     array = [5, 2, 3, 1, 4, 6]
+    
+    BubbleSortBook(array)
+    #BubbleSortOriginal(array)
+    
+
+def BubbleSortBook(array):
+    
+    for i in range(0, len(array)):
+        for j in range (len(array) - 1, i, -1):
             
+            print('i:', i, 'j:', j, array)
+            print('Comparing:', array[j], '<', array[j-1])
+            
+            if array[j] < array [j - 1]:
+                array[j], array[j - 1] = array[j - 1], array[j]
+
+def BubbleSortOriginal(array):
+    
     index = 0
     skipped = 0
     
