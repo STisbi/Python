@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 
 
+
 #######################################################
 # Name: Parse
 #
@@ -135,8 +136,10 @@ def EmbeddedNamespace():
 def FullyNamespaced():
     print("FullyNamespaced\n")
     
+    cparser = ET.XMLParser(target = CommentedTreeBuilder())
+    
     file = "XML Scripts\FullyNamespaced.xml"
-    tree = ET.parse(file)
+    tree = ET.parse(file, parser=cparser)
     root = tree.getroot()
     
     # Register it to get the proper namespaces in output
@@ -156,12 +159,19 @@ def FullyNamespaced():
                 name.text = "Richard Dick"
             print(name.text)
     
-    tree.write("XML Scripts\Output.xml")
-    # This has to be after the first write, adds the utf-8 thing at the top
+    # Writes and adds the utf-8 thing at the top
     tree.write("XML Scripts\Output.xml", xml_declaration=True,encoding='utf-8', method="xml")
 
 
+class CommentedTreeBuilder(ET.TreeBuilder):
+    def __init__(self, *args, **kwargs):
+        super(CommentedTreeBuilder, self).__init__(*args, **kwargs)
 
+    def comment(self, data):
+        self.start(ET.Comment, {})
+        self.data(data)
+        self.end(ET.Comment)
+        
 #######################################################
 #                        MAIN                         #
 #######################################################
