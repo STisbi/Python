@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
-<actors xmlns:actor="http://characters.example.com" xmlns="http://people.example.com">
+<?xml version='1.0' encoding='utf-8'?>
+<actors xmlns="http://people.example.com" xmlns:actor="http://characters.example.com">
     <actor:male>
     <!-- This is also a comment  -->
-        <actor:name>John Cleese</actor:name>
+        <actor:name>Richard Dick</actor:name>
         <actor:character>Lancelot</actor:character>
         <actor:character>Archie Leach</actor:character>
     </actor:male>

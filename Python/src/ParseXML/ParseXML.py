@@ -138,7 +138,7 @@ def FullyNamespaced():
     
     cparser = ET.XMLParser(target = CommentedTreeBuilder())
     
-    file = "XML Scripts\FullyNamespaced.xml"
+    file = "..\TestFiles\FullyNamespaced.xml"
     tree = ET.parse(file, parser=cparser)
     root = tree.getroot()
     
@@ -160,7 +160,7 @@ def FullyNamespaced():
             print(name.text)
     
     # Writes and adds the utf-8 thing at the top
-    tree.write("XML Scripts\Output.xml", xml_declaration=True,encoding='utf-8', method="xml")
+    tree.write("..\TestFiles\FullyNamespaced.xml", xml_declaration=True,encoding='utf-8', method="xml")
 
 
 class CommentedTreeBuilder(ET.TreeBuilder):
@@ -176,7 +176,7 @@ class CommentedTreeBuilder(ET.TreeBuilder):
 #                        MAIN                         #
 #######################################################
 def main():
-    file = "XML Scripts\BasicScript.xml"
+    file = "..\TestFiles\BasicScript.xml"
     Parse(file)
 
 if __name__ == "__main__":
