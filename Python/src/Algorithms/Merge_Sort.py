@@ -1,3 +1,7 @@
+from timeit import default_timer as timer
+from random import randint
+import sys
+
 gArray = [5, 4, 2, 6, 1, 3, 7]
 
 def MergeSort(aArray, start, end):
@@ -35,8 +39,8 @@ def Merge(aArray, start, half, end):
     rArray = aArray[half + 1: end + 1]
     
     # Sentinel values
-    lArray.append(999)
-    rArray.append(999)
+    lArray.append(sys.maxsize)
+    rArray.append(sys.maxsize)
     
     #print('lArray:', lArray, 'rArray', rArray)
     
@@ -52,14 +56,52 @@ def Merge(aArray, start, half, end):
             aArray[index] = rArray[rIndex]
             rIndex += 1
     
+def createArray():
+    limit = 1500
+    
+    array = [None]*limit
+    
+    for value in range(0, limit):
+        array[value] = randint(0, limit)
+    
+    return array
+
+
+def userInput():
+    print("Input integers individually all on one line without comma's then press enter. Ex: 5 1 3 23 4 543 0 2")
+    
+    # Get the array as input from the user
+    inputArray = [int(x) for x in input().split()]
+    
+    return inputArray
 
 
 #######################################################
 #                        MAIN                         #
 #######################################################
-def main():
-    print('Original:', gArray)
-    print('Sorted:  ', MergeSort(gArray, 0, len(gArray) - 1))
+def main(argv):
+    if(not argv):
+        #inputArray = userInput()
+        inputArray = createArray()
+    else:
+        inputArray = list(map(int, argv))
+        inputArray = createArray()
+    
+    # Get the execution time
+    start = timer()
+    
+    # The array with 1000, 1500, or 2000 elements 
+    inputArray = createArray()
+    
+    print("The array of size", len(inputArray), "is:    ", inputArray)
+    
+    # Call MergeSort and print the sorted array
+    print("The MergeSort sorted array is:", MergeSort(inputArray, 0, len(inputArray) - 1))
+    end = timer()
+    
+    print("The execution time is", end - start, "seconds.")
+    
 
+# The 0th argument is the file name
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
