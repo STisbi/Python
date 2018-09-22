@@ -56,13 +56,17 @@ def Merge(aArray, start, half, end):
             aArray[index] = rArray[rIndex]
             rIndex += 1
     
-def createArray():
-    limit = 1500
     
-    array = [None]*limit
+def createArray(size = 1000):
+    # The Numpy library can create a random array of size x in one line
+    #    but it doesn't come installed with python
     
-    for value in range(0, limit):
-        array[value] = randint(0, limit)
+    # Initialize the array
+    array = [None]*size
+    
+    # Fill it with random integers from 0 to size
+    for value in range(0, size):
+        array[value] = randint(0, size)
     
     return array
 
@@ -82,23 +86,26 @@ def userInput():
 def main(argv):
     if(not argv):
         #inputArray = userInput()
+        
+        # TODO: Get rid of this double call here, and in the else statement
+        # createArray takes an optional - size of array to be created - argument
+        #     Default is 1000, 
         inputArray = createArray()
     else:
+        # Convert the CL argument from a string list to int list
         inputArray = list(map(int, argv))
-        inputArray = createArray()
+        
+        # createArray takes an optional - size of array to be created - argument
+        #     Default is 1000,
+        inputArray = createArray(inputArray[0])
     
-    # Get the execution time
+    # Get the execution time of MergeSort
     start = timer()
-    
-    # The array with 1000, 1500, or 2000 elements 
-    inputArray = createArray()
-    
-    print("The array of size", len(inputArray), "is:    ", inputArray)
-    
-    # Call MergeSort and print the sorted array
-    print("The MergeSort sorted array is:", MergeSort(inputArray, 0, len(inputArray) - 1))
+    sortedArray = MergeSort(inputArray, 0, len(inputArray) - 1)
     end = timer()
     
+    print("The array of size", len(inputArray), "is:", inputArray)
+    print("The MergeSort sorted array is:", sortedArray)
     print("The execution time is", end - start, "seconds.")
     
 
