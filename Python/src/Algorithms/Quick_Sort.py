@@ -98,13 +98,14 @@ def main(argv):
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000,
         #inputArray = createArray(inputArray[0])
+        
+    print("The array of size", len(inputArray), "is:", inputArray)
     
     # Get the execution time of QuickSort
     start = timer()
     sortedArray = QuickSort(inputArray, 0, len(inputArray) - 1)
     end = timer()
     
-    print("The array of size", len(inputArray), "is:", inputArray)
     print("The QuickSort sorted array is:", sortedArray)
     print("The execution time is", end - start, "seconds.")
     

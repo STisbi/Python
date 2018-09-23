@@ -120,13 +120,14 @@ def main(argv):
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000,
         #inputArray = createArray(inputArray[0])
+        
+    print("The array of size", len(inputArray), "is:", inputArray)
     
     # Get the execution time of MergeSort
     start = timer()
     sortedArray = MergeSort(inputArray, 0, len(inputArray) - 1)
     end = timer()
     
-    print("The array of size", len(inputArray), "is:", inputArray)
     print("The MergeSort sorted array is:", sortedArray)
     print("The execution time is", end - start, "seconds.")
     
