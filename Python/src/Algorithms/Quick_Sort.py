@@ -54,7 +54,7 @@ def Partition(array, start, end):
 # @param size An optional parameter that specifies the size of the array
 #
 # @return An unsorted integer array of given size
-def createArray(size = 20):
+def createArray(size = 10000):
     # The Numpy library can create a random array of size x in one line
     #    but it doesn't come installed with python
     
@@ -85,28 +85,27 @@ def userInput():
 #######################################################
 def main(argv):
     if(not argv):
-        #inputArray = userInput()
+        inputArray = userInput()
         
         # TODO: Get rid of this double call here, and in the else statement
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000, 
-        inputArray = createArray()
+        #inputArray = createArray()
     else:
         # Convert the CL argument from a string list to int list
         inputArray = list(map(int, argv))
         
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000,
-        inputArray = createArray(inputArray[0])
-        
-    print("The array of size", len(inputArray), "is:", inputArray)
+        #inputArray = createArray(inputArray[0])
     
-    # Get the execution time of MergeSort
+    # Get the execution time of QuickSort
     start = timer()
     sortedArray = QuickSort(inputArray, 0, len(inputArray) - 1)
     end = timer()
     
-    print("The MergeSort sorted array is:", sortedArray)
+    print("The array of size", len(inputArray), "is:", inputArray)
+    print("The QuickSort sorted array is:", sortedArray)
     print("The execution time is", end - start, "seconds.")
     
 

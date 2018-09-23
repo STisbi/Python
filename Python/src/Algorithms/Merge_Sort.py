@@ -76,7 +76,7 @@ def Merge(array, start, half, end):
 # @param size An optional parameter that specifies the size of the array
 #
 # @return An unsorted integer array of given size    
-def createArray(size = 1000):
+def createArray(size = 10000):
     # The Numpy library can create a random array of size x in one line
     #    but it doesn't come installed with python
     
@@ -107,19 +107,19 @@ def userInput():
 #######################################################
 def main(argv):
     if(not argv):
-        #inputArray = userInput()
+        inputArray = userInput()
         
         # TODO: Get rid of this double call here, and in the else statement
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000, 
-        inputArray = createArray()
+        #inputArray = createArray()
     else:
         # Convert the CL argument from a string list to int list
         inputArray = list(map(int, argv))
         
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000,
-        inputArray = createArray(inputArray[0])
+        #inputArray = createArray(inputArray[0])
     
     # Get the execution time of MergeSort
     start = timer()
