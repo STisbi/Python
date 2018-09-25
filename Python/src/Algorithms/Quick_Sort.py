@@ -63,7 +63,8 @@ def createArray(size = 10000):
     
     # Fill it with random integers from 0 to size
     for value in range(0, size):
-        array[value] = randint(0, size)
+        #array[value] = randint(0, size)
+        array[value] = size - value
     
     return array
 
@@ -85,19 +86,19 @@ def userInput():
 #######################################################
 def main(argv):
     if(not argv):
-        inputArray = userInput()
+        #inputArray = userInput()
         
         # TODO: Get rid of this double call here, and in the else statement
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000, 
-        #inputArray = createArray()
+        inputArray = createArray(1000)
     else:
         # Convert the CL argument from a string list to int list
         inputArray = list(map(int, argv))
         
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000,
-        #inputArray = createArray(inputArray[0])
+        inputArray = createArray(inputArray[0])
         
     print("The array of size", len(inputArray), "is:", inputArray)
     

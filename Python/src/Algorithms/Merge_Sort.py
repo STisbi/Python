@@ -35,7 +35,7 @@ def MergeSort(array, start, end):
 # @param half  The index for the half way point of the array
 # @param end   The index to end a merge
 #
-# @return An semi-sorted array with elements greater than the pivot the right of it and elements less than the pivot to the left of it
+# @return The sorted sub-array from index start to index end
 def Merge(array, start, half, end):
     # Calculate the size of each half
     # Plus 1 to accommodate uneven sized arrays
