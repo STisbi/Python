@@ -64,7 +64,8 @@ def createArray(size = 10000):
     # Fill it with random integers from 0 to size
     for value in range(0, size):
         #array[value] = randint(0, size)
-        array[value] = size - value
+        #array[value] = size - value
+        array[value] = value
     
     return array
 
@@ -91,7 +92,7 @@ def main(argv):
         # TODO: Get rid of this double call here, and in the else statement
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000, 
-        inputArray = createArray(1000)
+        inputArray = createArray(100)
     else:
         # Convert the CL argument from a string list to int list
         inputArray = list(map(int, argv))

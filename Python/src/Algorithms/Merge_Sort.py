@@ -107,12 +107,12 @@ def userInput():
 #######################################################
 def main(argv):
     if(not argv):
-        inputArray = userInput()
+        #inputArray = userInput()
         
         # TODO: Get rid of this double call here, and in the else statement
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000, 
-        #inputArray = createArray()
+        inputArray = createArray(2048)
     else:
         # Convert the CL argument from a string list to int list
         inputArray = list(map(int, argv))
