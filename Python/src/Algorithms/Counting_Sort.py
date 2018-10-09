@@ -77,8 +77,7 @@ def main(argv):
         # TODO: Get rid of this double call here, and in the else statement
         # createArray takes an optional - size of array to be created - argument
         #     Default is 1000, 
-        inputArray = createArray(10)
-        inputArray = [1, 4, 1, 2, 7, 5, 2]
+        inputArray = createArray(100)
     else:
         # Convert the CL argument from a string list to int list
         inputArray = list(map(int, argv))
