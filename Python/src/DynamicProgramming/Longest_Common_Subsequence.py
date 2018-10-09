@@ -1,8 +1,4 @@
 def LCS(str1, str2):
-    #print("Debug:", "String 1:", str1)
-    #print("Debug:", "String 2:", str2)
-    
-    
     # Length of string will be length of row and column in table
     # Plus 1 for the 0 values
     x = len(str1) + 1
@@ -113,12 +109,6 @@ def printTable(table, x, y):
         print()
 
 def main():
-    #string1 = "AGCAT"
-    #string2 = "GAC"
-    
-    #string2 = "AGGTAB"
-    #string1 = "GXTXAYB"
-    
     string1 = "XMJYAUZ"
     string2 = "MZJAWXU"
     
