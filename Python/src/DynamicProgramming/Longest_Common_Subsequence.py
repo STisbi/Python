@@ -112,9 +112,9 @@ def main():
     string1 = "XMJYAUZ"
     string2 = "MZJAWXU"
     
-    lcs = LCS(string1, string2)
+    LRSBruteForce = LCS(string1, string2)
     
-    print("The longest common subsequence of", string1, "and", string2, "is", lcs)
+    print("The longest common subsequence of", string1, "and", string2, "is", LRSBruteForce)
     
 
 if __name__ == "__main__":

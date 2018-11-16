@@ -1,4 +1,11 @@
 import sys
+from collections import OrderedDict
+
+global x
+global y
+
+# Increases the maximum recursion size
+#sys.setrecursionlimit(5000)
 
 def LRS(str1, str2):
     #print("Debug:", "String 1:", str1)
@@ -108,6 +115,34 @@ def LRS(str1, str2):
     
     return LCS
 
+
+def printLRS(str, X):
+    for index, value in enumerate(str):
+        for subindex, subvalue in enumerate(str[index + 1:]):
+            if value == subvalue:
+                print(value, end="")
+
+    print()
+    
+def LRSBruteForce(str1, str2, len1, len2): 
+    if (len1 == 0) or (len2 == 0): 
+        return 0
+    if (str1[len1-1] == str2[len2-1]) and (len1 != len2): 
+        global x
+        x = str1[len1-1] + x
+        return 1 + LRSBruteForce(str1, str2, len1-1, len2-1)
+    else: 
+        return max(LRSBruteForce(str1, str2, len1, len2-1), LRSBruteForce(str1, str2, len1-1, len2))
+    '''if (x == 0) or (y == 0):
+        return 0
+    if (x > 0) and (y > 0) and (str1[x] == str2[y]):
+        return LRSBruteForce(str1, str2, len(str1) - 1, len(str2) - 1) + 1
+    if (x > 0) and (y > 0) and (str1[x] != str2[y]):
+        return max(LRSBruteForce(str1, str2, len(str1) - 1, len(str2)), 
+                   LRSBruteForce(str1, str2, len(str1), len(str2) - 1))'''
+
+
+
 def printTable(table, x, y):
     print("Debug:", "printTable x =", x, "y = ", y)
     for i in range(0, y):
@@ -116,6 +151,9 @@ def printTable(table, x, y):
         print()
 
 def main(argv):
+    global x
+    x = ""
+    
     if(not argv):
         lrsInput = "sethtisbi"
     else:
@@ -123,8 +161,13 @@ def main(argv):
         lrsInput = argv[0]
     
     # Like LCS but here the string is both x and y columns
-    lrs = LRS(lrsInput, lrsInput)
+    #lrs = LRS(lrsInput, lrsInput)
+    lrs = LRSBruteForce(lrsInput, lrsInput, len(lrsInput), len(lrsInput))
     
+    print(x)
+    # Removes duplicates from the total
+    print("".join(OrderedDict.fromkeys(x)))
+
     print("The longest repeated subsequence of", lrsInput, "is", lrs)
     
 
