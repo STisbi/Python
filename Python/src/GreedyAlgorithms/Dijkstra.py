@@ -12,9 +12,15 @@ def Dijkstra(source):
     infinity = sys.maxsize
     
     vertexList = CreateVertexList()
-    vertexQueue = vertexList
+    
+    # Create the queue with the source as the first element.
+    # .copy has to be used because of how python handles =.
+    # The = gives it the reference so modifying Queue modifies List.
+    vertexQueue = vertexList.copy()
     vertexQueue.remove(source)
     vertexQueue.insert(0, source)
+    
+    # Create the adjaceny matrix
     adjMatrix  = CreateAdjacencyMatrix(vertexList)
     
     #DEBUGprint("Vertices:", vertexList)
@@ -39,7 +45,7 @@ def Dijkstra(source):
      
     #DEBUGprint("Distances:", distances, "\nParent:   ", parents)
     position = 0
-    
+
     # Iterate through each vertex in the queue
     for index, vertex in enumerate(vertexQueue):
         # Remove the previous vertex, as it has been checked
@@ -72,8 +78,37 @@ def Dijkstra(source):
         
         # The next vertex to be considered has to be the one with the smallest path value
         MaintainPriorityQueue(vertexQueue, distances, source)
-        
+    
     print("Distances:", distances, "\nParents:  ", parents)
+    
+    PrintPath(parents, distances, vertexList, source)
+
+# @brief Prints the paths from a given source
+def PrintPath(parents, distances, vertexList, source):
+    for vertex in vertexList:
+        if vertex != source:
+            path = []
+            GetPath(parents, source, path, vertex)
+            
+            print()
+            print(source, "->", vertex, "(", source, ", ", end='')
+            for index, point in enumerate(path):
+                if index == (len(path) - 1):
+                    punc = ": "
+                else:
+                    punc = ", "
+                print(point, punc, end='')
+                
+            print(distances.get(vertex), ")")
+
+# @brief Recursively gets the parent of a vertex
+def GetPath(parents, source, path, parent):
+    if parent == source:
+        return
+    else:
+        path.insert(0, parent)
+        GetPath(parents, source, path, parents.get(parent))
+
 
 
 # @brief Maintains the priority queue
@@ -213,7 +248,7 @@ def main(argv):
     
     #DEBUG print("Edge Weights:", edgeWeights)
         
-    Dijkstra('c')
+    Dijkstra('a')
     
 
 # The 0th argument is the file name
