@@ -40,24 +40,33 @@ def Dijkstra(source):
     #DEBUGprint("Distances:", distances, "\nParent:   ", parents)
     position = 0
     
-    
+    # Iterate through each vertex in the queue
     for index, vertex in enumerate(vertexQueue):
+        # Remove the previous vertex, as it has been checked
         if index != 0:
             vertexQueue.remove(vertexQueue[index - 1])
+        # Iterate through edges
         for edge in edgeWeights:
+            # Make sure the vertex is in the edge and queue
             if (vertex in edge) and (vertex in vertexQueue):
+                # If the vertex is the head, the tail is the one to use
                 if edge[0] == vertex:
                     position = 1
                 else:
                     position = 0
                 
+                # Element 3 (position 2) is the weight
                 path = edge[2] + distances[vertex]
                 
                 #print("V:", vertex, "\nQ:", vertexQueue, "\nE:", edge, "\nP:", path)
                 #print("Distances:", distances, "\nParent:   ", parents)
             
+                # Dijkstra here
                 if path < distances[edge[position]]:
+                    # Update the distances dictionary
                     distances[edge[position]] = path
+                    
+                    # Update the parents dictionary
                     parents[edge[position]] = vertex
                     #print("Distances:", distances, "\nParent:   ", parents)
         
