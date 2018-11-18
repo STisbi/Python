@@ -79,18 +79,25 @@ def Dijkstra(source):
         # The next vertex to be considered has to be the one with the smallest path value
         MaintainPriorityQueue(vertexQueue, distances, source)
     
-    print("Distances:", distances, "\nParents:  ", parents)
+    #DEBUGprint("Distances:", distances, "\nParents:  ", parents)
     
     PrintPath(parents, distances, vertexList, source)
 
 # @brief Prints the paths from a given source
 def PrintPath(parents, distances, vertexList, source):
+    print("\nOutput from source", source)
+    
+    # Get the path for every vertex
     for vertex in vertexList:
+        # But not for the source since its just source -> source
         if vertex != source:
+            # Python is pass by object (similar to reference)
             path = []
+            
+            # This is a recursive function
             GetPath(parents, source, path, vertex)
             
-            print()
+            # Some formatting crap
             print(source, "->", vertex, "(", source, ", ", end='')
             for index, point in enumerate(path):
                 if index == (len(path) - 1):
@@ -103,8 +110,10 @@ def PrintPath(parents, distances, vertexList, source):
 
 # @brief Recursively gets the parent of a vertex
 def GetPath(parents, source, path, parent):
+    # The base case, stop when the parent of a vertex is the source
     if parent == source:
         return
+    # The recursive case, keeping getting a vertices parent
     else:
         path.insert(0, parent)
         GetPath(parents, source, path, parents.get(parent))
