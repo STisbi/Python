@@ -1,4 +1,5 @@
 import sys
+import re
 
 # Nearly all functions use this
 global edgeWeights
@@ -24,7 +25,7 @@ def Dijkstra(source):
     adjMatrix  = CreateAdjacencyMatrix(vertexList)
     
     #DEBUGprint("Vertices:", vertexList)
-    PrintAdjacenyMatrix(adjMatrix)
+    PrintAdjacenyMatrix(adjMatrix, vertexList)
     
     # The table for keeping track of total distances
     distances = {}
@@ -161,9 +162,10 @@ def CreateAdjacencyMatrix(vertexList):
 
 
 # @brief Print the adjacency matrix
-def PrintAdjacenyMatrix(adjMatrix):  
-    for row in adjMatrix:
-        print(row)
+def PrintAdjacenyMatrix(adjMatrix, vertexList):  
+    print(vertexList)
+    for index, row in enumerate(adjMatrix):
+        print(vertexList[index], row)
 
 
 # @brief Creates a list of all unique vertices in the graph
@@ -243,21 +245,34 @@ def main(argv):
     if(not argv):
         #UserInput()
         
-        edgeWeights = [[ 'a', 'b', 10],
-                       [ 'a', 'c', 20],
-                       [ 'b', 'c',  5],
-                       [ 'b', 'd', 16],
-                       [ 'c', 'd', 20]]
+        edgeWeights = [['A', 'B', 1],
+                       ['A', 'C', 6],
+                       ['B', 'D', 2],
+                       ['B', 'E', 7],
+                       ['C', 'E', 1],
+                       ['D', 'E', 1]]
+        
     else:
-        edgeWeights = [[ 'a', 'b', 10],
-                       [ 'a', 'c', 20],
-                       [ 'b', 'c',  5],
-                       [ 'b', 'd', 16],
-                       [ 'c', 'd', 20]]
+        print("File to open:", argv[0])
+        
+        file = open(argv[0], "r")
+        
+        edgeWeights = []
+        regex = re.compile('[\W_]+')
+        
+        with open(argv[0]) as file:
+            for line in file:
+                string = regex.sub('', line)
+                
+                # This is hackey
+                temp = list(string)
+                temp[2] = int(temp[2])
+                
+                edgeWeights.append(temp)
     
     #DEBUG print("Edge Weights:", edgeWeights)
         
-    Dijkstra('a')
+    Dijkstra('C')
     
 
 # The 0th argument is the file name
