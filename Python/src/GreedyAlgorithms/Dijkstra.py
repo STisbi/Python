@@ -224,16 +224,23 @@ def GetEdgeWeight(head, tail):
 # @brief Gets an array from the user
 #
 # @return An integer array specified by the user
-def UserInput():
-    print("Enter edge as VERTEX VERTEX WEIGHT; with a space between each character.")
-    print("Example: A B 1")
+def GetUserInput():
+    global edgeWeights
+    
+    edgeWeights = []
+    
+    print("Enter edge as VERTEX VERTEX WEIGHT.")
+    print("Example: AB1")
     print("Press enter after entering an edge. Enter as many edges as desired.")
-    print("Enter \"done\" when finished entering edges.")
     
-
-    #inputArray = [int(x) for x in input().split()]
-    
-    #return inputArray
+    while(True):
+        string = input("Enter an edge or type \"done\" when finished.")
+        if(string == "done"):
+            break
+        else:
+            buffer = list(string)
+            buffer[2] = int(buffer[2])
+            edgeWeights.append(buffer)
 
 
 #######################################################
@@ -243,14 +250,7 @@ def main(argv):
     global edgeWeights
     
     if(not argv):
-        #UserInput()
-        
-        edgeWeights = [['A', 'B', 1],
-                       ['A', 'C', 6],
-                       ['B', 'D', 2],
-                       ['B', 'E', 7],
-                       ['C', 'E', 1],
-                       ['D', 'E', 1]]
+        GetUserInput()
         
     else:
         print("File to open:", argv[0])
@@ -270,9 +270,16 @@ def main(argv):
                 
                 edgeWeights.append(temp)
     
+    
     #DEBUG print("Edge Weights:", edgeWeights)
         
-    Dijkstra('C')
+    while(True):
+        string = input("Enter a source vertex or type \"done\" to end program.")
+        if(string == "done"):
+            print("Bye.")
+            break
+        else:
+            Dijkstra(string)
     
 
 # The 0th argument is the file name
