@@ -6,8 +6,6 @@ global edgeWeights
 
 
 # @brief The main algorithm for finding the shortest path
-#
-# @return The shortest path
 def Dijkstra(source):
     # Giant value to simulate infinity
     infinity = sys.maxsize
@@ -84,7 +82,13 @@ def Dijkstra(source):
     
     PrintPath(parents, distances, vertexList, source)
 
+
 # @brief Prints the paths from a given source
+#
+# @param parents    A dictionary mapping a vertex to its parent vertex
+# @param distances  A dictionary of the distances from the source for each vertex
+# @param vertexList The list of vertices in the graph
+# @param source     The source vertex
 def PrintPath(parents, distances, vertexList, source):
     print("\nOutput from source", source)
     
@@ -109,7 +113,13 @@ def PrintPath(parents, distances, vertexList, source):
                 
             print(distances.get(vertex), ")")
 
+
 # @brief Recursively gets the parent of a vertex
+#
+# @param parents A dictionary mapping a vertex to its parent vertex
+# @param source  The source vertex
+# @param path    An array of vertices from the end of a path to the source
+# @param parent  The vertex (key) representing the parent of a value in parents
 def GetPath(parents, source, path, parent):
     # The base case, stop when the parent of a vertex is the source
     if parent == source:
@@ -122,6 +132,10 @@ def GetPath(parents, source, path, parent):
 
 
 # @brief Maintains the priority queue
+#
+# @param vertexQueue An array of vertices in the graph
+# @param distances   A dictionary of the distances from the source for each vertex
+# @param source      The source vertex
 def MaintainPriorityQueue(vertexQueue, distances, source):
     minimumValue = sys.maxsize
     priorityVertex = ''
@@ -144,6 +158,8 @@ def MaintainPriorityQueue(vertexQueue, distances, source):
 
 # @brief Creates the adjaceny matrix
 #
+# @param vertexList The list of vertices in the graph
+#
 # @return The adjacency matrix
 def CreateAdjacencyMatrix(vertexList):
     # Create the NxN matrix, with N = length of vertexList
@@ -162,6 +178,9 @@ def CreateAdjacencyMatrix(vertexList):
 
 
 # @brief Print the adjacency matrix
+#
+# @param adjMatrix  A 2d array representing the adjacency matrix
+# @param vertexList The list of vertices in the graph
 def PrintAdjacenyMatrix(adjMatrix, vertexList):  
     print(vertexList)
     for index, row in enumerate(adjMatrix):
