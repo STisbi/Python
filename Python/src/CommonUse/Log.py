@@ -3,7 +3,7 @@
 
 
 class Log(object):
-    DEBUG = True
+    DEBUG = False
     
     def Print(self, *arguments, newLine = True):
         for string in arguments:

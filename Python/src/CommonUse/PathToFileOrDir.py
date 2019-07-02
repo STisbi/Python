@@ -1,4 +1,3 @@
-from CommonUse import PathData as PD
 from CommonUse import Log
 
 import sys
@@ -13,14 +12,15 @@ class Path:
     path = ""
     pathList = []
     
+    
+    def GetPaths(self):
+        return self.pathList
+    
+    
     def AddPath(self, path):
         self.logger.PrintDebug(path)
         
         self.pathList.append(path)
-    
-    
-    def GetPaths(self):
-        return self.pathList
     
     
     def IsFile(self, path):
@@ -40,7 +40,7 @@ class Path:
             # Make sure the file isn't this one currently running
             if self.IsFile(file) and fileName != os.path.basename(__file__):
                 self.AddPath(file)
-            # Are we checking sub-directories?
+            # If flag is set, check sub-directories
             elif self.RECURSIVE:
                 self.HandleDirectory(file)
             else:
@@ -58,10 +58,12 @@ class Path:
                 self.logger.PrintDebug("The recursive flag " + ("was " if self.RECURSIVE else "was not ") + "set.")
                 
                 self.HandleDirectory(self.path)
-            else:
+            elif self.IsFile(self.path):
                 self.logger.PrintDebug("The path given is to a file.")
                 
-                self.GetPathToFile(self.path)
+                self.AddPath(self.path)
+            else:
+                pass
         # An invalid path was given
         else:
             self.logger.PrintDebug("The path given does not exist or is not valid.")

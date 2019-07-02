@@ -24,6 +24,8 @@ class ChangeExt:
         # Run it
         pathObj.Dessiminate()
         
+        extChanged = False
+        
         for fileName in pathObj.GetPaths():
             # Find the position of the last '.'
             dotIndex = fileName.rfind(".")
@@ -41,6 +43,12 @@ class ChangeExt:
                 
                 # THE ACTUAL RENAMING IN THE SYSTEM
                 os.rename(fileName, newName)
+                
+                extChanged = True
+                self.logger.Print("Changing \"" + fileName + "\" to \"" + newName + "\"")
+        
+        if not extChanged:
+            self.logger.Print("No extensions were changed at " + self.path)
         
     
     def ShowHelp(self):
