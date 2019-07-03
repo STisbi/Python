@@ -9,18 +9,19 @@ class Path:
     
     RECURSIVE = False
     
-    path = ""
-    pathList = []
+    path = os.getcwd()
+    
+    filePathList = []
     
     
     def GetPaths(self):
-        return self.pathList
+        return self.filePathList
     
     
     def AddPath(self, path):
         self.logger.PrintDebug(path)
         
-        self.pathList.append(path)
+        self.filePathList.append(path)
     
     
     def IsFile(self, path):
@@ -47,7 +48,7 @@ class Path:
                 pass
     
     
-    def Dessiminate(self):
+    def Run(self):
         # Is this path valid?
         if os.path.exists(self.path):
             self.logger.PrintDebug("The path given exists.")
@@ -83,11 +84,6 @@ class Path:
             else:
                 pass
             
-        # If no path was specified, use the current working directory
-        if self.path == "":
-            self.setPath(os.getcwd())
-            self.logger.PrintDebug("No path specified, using \"" + self.path + "\" instead.")
-            
     
     def setPath(self, path):
         self.path = path
@@ -107,11 +103,11 @@ def main(argv):
     
     if argv:
         path.ParseArguments(argv)
-        path.Dessiminate()
+        path.Run()
     else:
         path.logger.Print("USAGE: \"py " + os.path.basename(__file__)  + " -p <path to file or directory> [-r]\" where -r is an optional flag on whether to iterate through subdirectories.")
         path.ParseArguments()
-        path.Dessiminate()
+        path.Run()
 
 
 # The 0th argument is the file name

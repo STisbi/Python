@@ -22,7 +22,7 @@ class ChangeExt:
         pathObj.setRecursive(self.recursive)
         
         # Run it
-        pathObj.Dessiminate()
+        pathObj.Run()
         
         extChanged = False
         
@@ -52,39 +52,35 @@ class ChangeExt:
         
     
     def ShowHelp(self):
-        print("Usage: python ChangeFileExtension.py -f <from extension without dot> -t <to extension without dot> [optional -p <path to file or directory>]")
+        self.logger.Print("Usage: py ChangeFileExtension.py -f <from extension without dot> -t <to extension without dot> [optional -p <path to file or directory>]")
         
-    def GetInput(self):
-        self.fromExt = input("Extension to change (without dot): ")
-        self.toExt   = input("Extension to change to (without dot): ")
-        self.path    = input("Optionally, specify the full path to a file or directory. Or press enter to use the current directory: ")
-        
-        self.path = self.path if self.path else os.getcwd() 
-        
-        self.ChangeFileExt()
-        
-        
-    def SetFlags(self, argList):
+    
+    # Bold assumptions made here that the next argument after a flag is value for that flag
+    def ParseArgs(self, argList):
+        # Iterate through the argument list
         for index, args in enumerate(argList):
+            # The from flag
             if args == "-f":
                 self.fromExt = argList[index + 1]
+            # The to flag
             elif args == "-t":
                 self.toExt = argList[index + 1]
+            # The path flag, defaults to the current working directory
             elif args == "-p":
                 self.path = argList[index + 1]
+            # Iterate through sub-directories?
             elif args == "-r":
                 self.recursive = True
             else:
                 pass
-        
-    def ParseArgs(self, argList):
-        numArgs = len(argList)
             
-        if numArgs > 2:
-            self.SetFlags(argList)
+    def Run(self):
+        # Proceed only if the flags were set
+        if self.fromExt and self.toExt:
             self.ChangeFileExt()
         else:
-            print("Too many arguments given")
+            self.logger.Print("No flags were set, see usage.")
+            self.ShowHelp()
         
 
 def main(argv):
@@ -92,9 +88,9 @@ def main(argv):
     
     if argv:
         ui.ParseArgs(argv)
+        ui.Run()
     else:
         ui.ShowHelp()
-        ui.GetInput()
 
 if __name__ == '__main__':
     main(sys.argv[1:])
