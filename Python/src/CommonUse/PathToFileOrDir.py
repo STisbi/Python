@@ -49,7 +49,7 @@ class Path:
     
     
     def Run(self):
-        # Is this path valid?
+        # Is this path valid??
         if os.path.exists(self.path):
             self.logger.PrintDebug("The path given exists.")
                 
