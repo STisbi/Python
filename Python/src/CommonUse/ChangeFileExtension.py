@@ -52,7 +52,7 @@ class ChangeExt:
         
     
     def ShowHelp(self):
-        self.logger.Print("Usage: py ChangeFileExtension.py -f <from extension without dot> -t <to extension without dot> [optional -p <path to file or directory>]")
+        self.logger.Print("Usage: py " + os.path.basename(__file__) + " -f <from extension without dot> -t <to extension without dot> [optional -p <path to file or directory>]")
         
     
     # Bold assumptions made here that the next argument after a flag is value for that flag
