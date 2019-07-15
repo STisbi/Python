@@ -37,6 +37,12 @@ class ReadFile:
         return self.strList
     
     
+    def ClearData(self):
+        self.charList = []
+        self.strList  = []
+        self.path     = ""
+        
+    
     def Run(self, path):
         if os.path.isfile(path):
             self.path = path
