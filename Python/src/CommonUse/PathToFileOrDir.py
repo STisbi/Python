@@ -1,11 +1,11 @@
-from CommonUse import Log
+from CommonUse import Printer
 
 import sys
 import os
 
 
 class Path:
-    logger = Log.Log()
+    logger = Printer.Printer()
     
     RECURSIVE = False
     

@@ -1,11 +1,11 @@
 from CommonUse import PathToFileOrDir as PT
-from CommonUse import Log
+from CommonUse import Printer
 
 import os
 import sys
 
 class ChangeExt:
-    logger = Log.Log()
+    logger = Printer.Printer()
     
     fromExt   = ""
     toExt     = ""

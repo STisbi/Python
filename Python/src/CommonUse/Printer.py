@@ -2,7 +2,7 @@
 # https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
 
 
-class Log(object):
+class Printer(object):
     DEBUG = False
     
     def Print(self, *arguments, newLine = True):
@@ -20,4 +20,8 @@ class Log(object):
                     print(string)
                 else:
                     print(string, end=' ', flush=True)
+                    
+                    
+    def PrintNewLine(self):
+        print()
         

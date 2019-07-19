@@ -1,20 +1,22 @@
 from CommonUse import ReadFromFile as rff
+from CommonUse import Printer
 
 import os
 import sys
 
 class City():
     cityName = ""
-    goesTo   = ""
+    connections = []
     
     
-    def __init__(self, cityName = "", goesTo = ""):
-        self.cityName = cityName
-        self.goesTo   = goesTo
+    def __init__(self, cityName = ""):
+        self.cityName    = cityName
+        self.connections = []
 
 
 class CityRoutes():
     util = rff.ReadFile()
+    printer = Printer.Printer()
     
     pathFound = False
     
@@ -33,12 +35,15 @@ class CityRoutes():
     routeMap     = {}
     heuristicMap = {}
     
+    cities     = []
     routes     = []
     heuristics = []
     cityPaths  = []
     
     def __init__(self, argList):
         self.ParseArgs(argList)
+        
+        self.printer.DEBUG = False
         
     
     def ParseArgs(self, argList):
@@ -56,34 +61,77 @@ class CityRoutes():
 
 
     def ShowHelp(self):
-        print("Usage: py " + os.path.basename(__file__) + " -f <from city> -t <to city> -p <path to file with routes>")
+        self.printer.Print("Usage: <python command> " + os.path.basename(__file__) + " -f <from city> -t <to city> -p <path to file with routes> [-h <path to heuristic file>]")
 
 
     def GetRoutesFromFile(self):
         self.util.Run(self.pathToFile)
         self.routes = self.util.GetStrList()
         
+        # If a heuristic file was given, parse it as well
         if self.pathToHeuristic:
+            # Clear out data route path data first
             self.util.ClearData()
             self.util.Run(self.pathToHeuristic)
             self.heuristics = self.util.GetStrList()
             
-            # Remove end of input line
-            del self.heuristics[len(self.heuristics) - 1]
             
-            self.SetHeuristicCity()
+            self.SetHeuristicCity(self.FindHeuristicCity())
             self.CreateHeuristicMap()
         
-        # Remove end of input line
-        del self.routes[len(self.routes) - 1]
         
-        
+        self.SetUniqueCities()
+        self.SetCityConnections()
         self.CreateRouteMap()
+    
+    
+    def SetUniqueCities(self):
+        # Iterate through every pair of cities
+        for cityPair in self.routes:
+            # If there are cities already in the unique cities list (i.e. the first iteration)
+            if self.cities:
+                uniqueCity0 = True
+                uniqueCity1 = True
+                
+                # Check if these two cities are unique
+                for city in self.cities:
+                    if cityPair[0] == city.cityName:
+                        uniqueCity0 = False
+                    if cityPair[1] == city.cityName:
+                        uniqueCity1 = False
+                
+                # Add the unique city
+                if uniqueCity0:
+                    self.cities.append(City(cityPair[0]))
+                if uniqueCity1:
+                    self.cities.append(City(cityPair[1]))
+            else:
+                # If for whatever reason they are the same, add just one
+                if cityPair[0] == cityPair[1]:
+                    self.cities.append(City(cityPair[0]))
+                else:
+                    self.cities.append(City(cityPair[0]))
+                    self.cities.append(City(cityPair[1]))
+    
+    
+    def SetCityConnections(self):
+        # Iterate through every unique city
+        for city in self.cities:
+            # Then for each route
+            for cityPair in self.routes:
+                # If that unique city is in a route
+                if city.cityName == cityPair[0]:
+                    # Add the city it goes to and the distance
+                    city.connections.append([cityPair[1], cityPair[2]])
+                if city.cityName == cityPair[1]:
+                    # Add the city it goes to and the distance
+                    city.connections.append([cityPair[0], cityPair[2]])
+                    
     
     
     def CreateRouteMap(self):
         for route in self.routes:
-            key = tuple(route[:2])
+            key = tuple(route[:3])
             value = False
             self.routeMap[key] = value
             
@@ -95,104 +143,132 @@ class CityRoutes():
             self.heuristicMap[key] = value
             
     
-    def SetHeuristicCity(self):
+    def FindHeuristicCity(self):
         for value in self.heuristics:
             if int(value[1]) == 0:
-                self.heuristicCity = value[0]
+                return value[0]
+            
+            
+    def SetHeuristicCity(self, city):
+        self.heuristicCity = city
                 
     
     def GetHeuristicCity(self):
-        print(self.heuristicCity)
+        return self.heuristicCity
         
 
     def PrintRoutes(self):
         for route in self.routes:
-            print(route)
+            self.printer.Print(route)
         
-        print()
+        self.printer.Print()
+    
+    
+    def PrintUniqueCities(self):
+        for index, city in enumerate(self.cities):
+            self.printer.Print("City " + str(index + 1) + ": " + city.cityName + " goes to: ", newLine=False)
+            
+            for connectingCity in city.connections:
+                self.printer.Print(connectingCity[0] + "(" + connectingCity[1] + ") ", newLine=False)
+            
+            self.printer.PrintNewLine()
+            
+        self.printer.PrintNewLine()
     
     
     def PrintRouteMap(self):
         for key in self.routeMap:
-            print("Key:   ", key)
-            print("Value: ", self.routeMap[key])
+            self.printer.Print("Key:   ", key)
+            self.printer.Print("Value: ", self.routeMap[key])
             
-        print()
+        self.printer.PrintNewLine()
     
     
     def PrintHeuristics(self):
         for value in self.heuristics:
-            print(value)
+            self.printer.Print(value)
             
-        print()
+        self.printer.PrintNewLine()
+        
+    
+    def PrintHeuristicMap(self):
+        for key in self.heuristicMap:
+            self.printer.Print("Key:   " + key)
+            self.printer.Print("Value: " + self.heuristicMap[key])
+            
+        self.printer.PrintNewLine()
     
     
-    def PrintCities(self):
+    def PrintCityPaths(self):
         for cities in self.cityPaths:
-            print(cities)
+            self.printer.Print(cities)
     
     
-    def GetRoute(self):
+    def PrintRoute(self):
         printAllPaths = False
         
-        optimalPath = []
-        
-        print("Route: ")
+        self.printer.Print("Route: ")
         
         for cities in self.cityPaths:
             if cities[0] == self.fromCity and cities[len(cities) - 1] == self.toCity:
                 for index, path in enumerate(cities[:-1]):
                     for route in self.routes:
                         if cities[index] in route and cities[index + 1] in route:
-                            print(cities[index] + " to " + cities[index + 1] + ": " + route[2] + " km")
+                            self.printer.Print(cities[index] + " to " + cities[index + 1] + ": " + route[2] + " km")
+                
+                if not printAllPaths:
+                    break
+                 
+        if not self.pathFound:
+            self.printer.Print("none")
+    
+    
+    def PrintRouteDistance(self):
+        printAllPaths = False
+        
+        for cities in self.cityPaths:
+            if cities[0] == self.fromCity and cities[len(cities) - 1] == self.toCity:
+                for index, path in enumerate(cities[:-1]):
+                    for route in self.routes:
+                        if cities[index] in route and cities[index + 1] in route:
                             self.totalDistance += int(route[2])
                 
                 if not printAllPaths:
                     break
-                            
+                 
         if not self.pathFound:
-            print("none")
-    
-    def GetRouteDistance(self):
-        distance = 0
-        
-        for cities in self.cityPaths:
-            if cities[0] == self.fromCity and cities[len(cities) - 1] == self.toCity:
-                for index, path in enumerate(cities[:-1]):
-                    for route in self.routes:
-                        if cities[index] in route and cities[index + 1] in route:
-                            distance += int(route[2])
+            self.printer.Print("none")
                             
-        print("Distance: ", end='', flush=True)
+        self.printer.Print("Distance: ", newLine=False)
     
         if self.pathFound:
-            print(str(distance))
+            self.printer.Print(str(self.totalDistance))
         else:
-            print("infinity")
+            self.printer.Print("infinity")
     
     
-    
-    def GetNodesExpanded(self):
-        print("Nodes Expanded: " + str(self.nodesExpanded))
+    def PrintNodesExpanded(self):
+        self.printer.Print("Nodes Expanded: " + str(self.nodesExpanded))
             
     
-    def GetMaxMemoryNodes(self):
+    def PrintMaxMemoryNodes(self):
         self.maxNodesInMem = len(self.cityPaths) - 1
-        print("Max nodes in memory: " + str(self.maxNodesInMem))        
+        
+        self.printer.Print("Max nodes in memory: " + str(self.maxNodesInMem))        
             
             
-    def GetNodesGenerated(self):
+    def PrintNodesGenerated(self):
         self.maxNodesInMem = len(self.cityPaths)
         
-        print("Nodes Generated: " + str(self.maxNodesInMem))
+        self.printer.Print("Nodes Generated: " + str(self.maxNodesInMem))
     
     
     def PrintInfo(self):
-        self.GetNodesExpanded()
-        self.GetNodesGenerated()
-        self.GetMaxMemoryNodes()
-        self.GetRouteDistance()
-        self.GetRoute()
+        self.PrintNodesExpanded()
+        self.PrintNodesGenerated()
+        self.PrintMaxMemoryNodes()
+        self.PrintRouteDistance()
+        self.PrintRoute()
     
     
     def AddCityToList(self, cityName, goesTo):
@@ -220,7 +296,7 @@ class CityRoutes():
     
     
     def CheckRoutes(self, currentCities):
-#         print("Checking for route from " + self.fromCity + " to " + self.toCity + " in " + str(currentCities))
+        self.printer.PrintDebug("Checking for route from " + self.fromCity + " to " + self.toCity + " in " + str(currentCities))
         
         fringe = []
         
@@ -256,7 +332,7 @@ class CityRoutes():
         
     
     def CheckRouteHeuristically(self, currentCities):
-#         print("Heuristic route from " + self.fromCity + " to " + self.toCity + " in " + str(currentCities))
+        self.printer.PrintDebug("Heuristic route from " + self.fromCity + " to " + self.toCity + " in " + str(currentCities))
         
         fringe = []
         
@@ -324,8 +400,9 @@ def main(argv):
     if argv:
         routes = CityRoutes(argv)
         routes.Run()
-#         routes.PrintRoutes()
-#         routes.PrintHeuristics()
+        routes.PrintRoutes()
+        routes.PrintHeuristics()
+        routes.PrintUniqueCities()
         routes.CheckForRoutes()
         routes.PrintInfo()
     else:
