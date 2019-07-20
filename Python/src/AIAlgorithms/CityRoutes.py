@@ -161,7 +161,7 @@ class CityRoutes():
         for route in self.routes:
             self.printer.Print(route)
         
-        self.printer.Print()
+        self.printer.PrintNewLine()
     
     
     def PrintUniqueCities(self):
@@ -264,6 +264,9 @@ class CityRoutes():
     
     
     def PrintInfo(self):
+        self.PrintRoutes()
+        self.PrintHeuristics()
+        self.PrintUniqueCities()
         self.PrintNodesExpanded()
         self.PrintNodesGenerated()
         self.PrintMaxMemoryNodes()
@@ -400,9 +403,6 @@ def main(argv):
     if argv:
         routes = CityRoutes(argv)
         routes.Run()
-        routes.PrintRoutes()
-        routes.PrintHeuristics()
-        routes.PrintUniqueCities()
         routes.CheckForRoutes()
         routes.PrintInfo()
     else:
