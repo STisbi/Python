@@ -24,9 +24,7 @@ class ReadFile:
     # and not by the user. This is so that, all the proper checks
     # required on user input can be handled first
     def ReadFile(self):
-        file = open(self.path, "r")
-        
-        with open(self.path) as file:
+        with open(self.path, "r") as file:
             for line in file:
                 self.AddLineByChar(line)
                 self.AddLineByWord(line)
