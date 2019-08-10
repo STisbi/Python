@@ -7,27 +7,32 @@ import re
 # a command line argument. It provides several utility methods that
 # parse the file by line into individual characters or words.
 class ReadFile:
+    areCharsDigits = True
+    areStrDigits   = True
+    
+    numRows     = 0
+    numCharColm = 0
+    numStrColm  = 0
+    
+    path = None
+    
     charList     = []
     strList      = []
     typeCharList = []
     typeStrList  = []
     
-    areCharsDigits = True
-    areStrDigits   = True
-    
     regex = re.compile('[\W_]+')
-    
-    path = ""
-    
     
     # This method, although counter-intuitive is called internally
     # and not by the user. This is so that, all the proper checks
     # required on user input can be handled first
     def ReadFile(self):
         with open(self.path, "r") as file:
-            for line in file:
+            for index, line in enumerate(file):
                 self.AddLineByChar(line)
                 self.AddLineByWord(line)
+                
+            self.numRows = index + 1
     
     
     # Takes a line from the file, then each character from 
@@ -44,10 +49,14 @@ class ReadFile:
         for char in string:
             tempCharList.append(char)
             
+            # Set the number of columns
+            if len(string) > self.numCharColm:
+                self.numCharColm = len(string)
+            
             if char.isdigit():
                 tempDigList.append(int(char))
             else:
-                tempDigList.append(float("inf"))
+                tempDigList.append(char)
                 self.areCharsDigits = False
                 
         self.charList.append(tempCharList)
@@ -69,10 +78,14 @@ class ReadFile:
         for word in strList:
             tempStrList.append(word)
             
+            # Set the number of columns
+            if len(strList) > self.numStrColm:
+                self.numStrColm = len(strList)
+            
             if word.isdigit():
                 tempDigList.append(int(word))
             else:
-                tempDigList.append(float("inf"))
+                tempDigList.append(word)
                 self.areStrDigits = False
         
         self.strList.append(tempStrList)
@@ -103,6 +116,23 @@ class ReadFile:
     # that has been converted into their numerical value
     def GetTypeStrList(self):
         return self.typeStrList
+    
+    
+    # Returns the number of rows (lines in the file)
+    def GetNumRows(self):
+        return self.numRows
+    
+    
+    # Returns the maximum number of columns in the file
+    # as created by the characters in a line
+    def GetNumCharColm(self):
+        return self.numCharColm
+    
+    
+    # Returns the maximum number of columns in the file
+    # as created by words in a line 
+    def GetNumStrColm(self):
+        return self.numStrColm
     
     
     # Returns true if the list comprised of all characters
@@ -181,6 +211,8 @@ def main(argv):
         util.Run(argv[0])
         
         util.PrintStrList()
+        
+        print(util.GetNumRows(), util.GetNumCharColm(), util.GetNumStrColm())
         
 
 # The 0th argument is the file name
