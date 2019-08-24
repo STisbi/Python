@@ -5,7 +5,9 @@ import math
 
 
 class Calculate():
-    numCombinations = 0
+    ASCII_A   = 65
+            
+    numVarComb = 0
     
     util = rff.ReadFile()
     
@@ -14,7 +16,8 @@ class Calculate():
     variables    = []
     trainingData = []
     
-    probability = {}
+    charProbability  = {}
+    tupleProbability = {}
     
     def __init__(self, argList):
         self.ParseArguments(argList)
@@ -44,9 +47,17 @@ class Calculate():
         print(self.variables)
     
             
-    def PrintInitialProbabilities(self):
-        for key in self.probability:
-            print("Key: {0:5} Value: {1:0}".format(key, self.probability[key]))
+    def PrintProbabilities(self, useTuple = True):
+        GAP = 1
+        
+        if useTuple:
+            length = len(self.variables)
+            for key in self.tupleProbability:
+                x = length - len(key) + GAP
+                print("Key: {0:1} {1:1} Value: {2:1}".format(" ".join(map(str, key)), " ".join([" "] * x), self.tupleProbability[key]))
+        else:
+            for key in self.charProbability:
+                print("Key: {0:5} Value: {1:0}".format(key, self.charProbability[key]))
     
     
     def SetVariables(self):
@@ -54,18 +65,28 @@ class Calculate():
         
         
     def GetNumComb(self):
-        if self.numCombinations == 0:
+        if self.numVarComb == 0:
             self.CalcNumVarComb()
         
-        return int(self.numCombinations)
+        return int(self.numVarComb)
         
         
     def CalcNumVarComb(self):
         n = len(self.variables)
         numerator = math.factorial(n)
+        
         for k in range(0, n):
             denominator = math.factorial(k) * math.factorial(n - k)
-            self.numCombinations += numerator / denominator
+            self.numVarComb += numerator / denominator
+            
+            
+    def KeyToTuple(self):
+        for key in self.charProbability:
+            tempList  = []
+            for charc in key:
+                tempList.append(ord(charc) - self.ASCII_A)
+                
+            self.tupleProbability[tuple(tempList)] = 0
         
     
     # This method in combination with the AddToRoot method
@@ -77,12 +98,11 @@ class Calculate():
     #                ABD
     #          AC -> ACD
     #          AD                                                       
-    
     def CalcInitialProbabilities(self):
         for index, variable in enumerate(self.variables):
             self.AddToRoot(variable, index + 1)
             
-        self.probability[self.variables[len(self.variables) - 1]] = 0
+        self.charProbability[self.variables[len(self.variables) - 1]] = 0
             
     
     # This method adds one variable to the root and then recursively
@@ -93,19 +113,50 @@ class Calculate():
         if start == len(self.variables):
             pass
         else:
-            if root not in self.probability:
-                    self.probability[root] = 0
+            if root not in self.charProbability:
+                    self.charProbability[root] = 0
                     
             for varIndex in range(start, len(self.variables)):
                 key = root + self.variables[varIndex]
-                if key not in self.probability:
-                    self.probability[key] = 0
+                if key not in self.charProbability:
+                    self.charProbability[key] = 0
                     self.AddToRoot(key, varIndex + 1)
                         
     
             
     def CalculateProbabilities(self):
+        # Builds the combinations and initializes them to 0
         self.CalcInitialProbabilities()
+        
+        # Convert the alphabetical keys to numerical
+        self.KeyToTuple()
+        
+        numRows = 0
+        
+        for rowIndex in range(0,len(self.trainingData)):
+            numRows += 1
+            for key in self.tupleProbability:
+                match = True
+                # Check if all elements in the key are in that row
+                for index in key:
+                    if self.trainingData[rowIndex][index] != 1:
+                        match = False
+                        break
+            
+                if match:
+                    self.tupleProbability[key] += 1
+                    
+        values = []
+        
+        # Determine the probabilities and add it to both dictionaries
+        for index, key in enumerate(self.tupleProbability):
+            values.append(self.tupleProbability[key] / numRows)
+            self.tupleProbability[key] = values[index]
+            
+        for index, key in enumerate(self.charProbability):
+            self.charProbability[key] = values[index]
+                
+            
     
 #######################################################
 #                        MAIN                         #
@@ -113,7 +164,7 @@ class Calculate():
 def main(argv):
     if argv:
         calc = Calculate(argv)
-        calc.PrintInitialProbabilities()
+        calc.PrintProbabilities()
     else:
         print("No argument given.")
         
