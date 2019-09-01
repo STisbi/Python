@@ -1,5 +1,0 @@
-Dallas Tulsa 200
-Houston Dallas 150
-Austin San_Antonio 50
-Austin El_Paso 500
-Dallas Austin 100
