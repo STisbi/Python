@@ -50,16 +50,6 @@ class Game():
 
         return currentPlayer
 
-    def OtherPlayer(self):
-        otherPlayer = None
-
-        if self.playerOne.IsTurn():
-            otherPlayer = self.playerTwo
-        else:
-            otherPlayer = self.playerOne
-
-        return otherPlayer
-
     def EndTurn(self):
         if self.playerOne.IsTurn():
             self.playerOne.TurnEnd()
